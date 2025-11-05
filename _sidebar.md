@@ -1,0 +1,2 @@
+- [Beranda](/)
+- [Bagian 1 - Intro](/Bagian1/intro.md)
