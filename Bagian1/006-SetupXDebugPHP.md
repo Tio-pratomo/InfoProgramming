@@ -1,7 +1,3 @@
-Baik, saya buat revisi lengkap dan sederhana untuk XDebug setup Anda! 📚
-
----
-
 # XDEBUG SETUP GUIDE - SIMPLIFIED
 
 ## ⚡ Ringkasan Singkat
