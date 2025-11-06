@@ -8,3 +8,4 @@
 - [Naming File And Directory](/Bagian1/004-NamingFileAndDirectory.md)
 - [Instalasi dan Setup PHP](/Bagian1/005-SetupPHP.md)
 - [Setup XDebug](/Bagian1/006-SetupXDebugPHP.md)
+- [Install MariaDB](/Bagian1/007-InstallMariaDB.md)
