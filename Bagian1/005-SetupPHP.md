@@ -1,4 +1,4 @@
-# 📚 Dokumentasi Lengkap: PHP Development Environment Setup
+# PHP Development Environment Setup
 
 ## 1. Install PHPEnv
 
@@ -154,9 +154,15 @@ composer install
 
 ---
 
-## 3. Install Phpactor
+## 3. Install Phpactor + Setup (Optional)
 
-### 3.1 Install via PHAR (Recommended)
+`Phpactor` adalah language server dan tool refactoring/introspection untuk PHP yang menonjol pada code actions seperti rename, move class, generate method/constructor, implement interface, serta navigasi dan completion kontekstual melalui LSP.
+
+Saya jadikan ini opsional karena kalian cukup install ekstensi intelephense dari **bmewburn.vscode-intelephense-client**.
+
+Penjelasan selanjutnya cara instalasi Phpactor. **Sekali lagi itu opsional**. Meskipun itu menjadi kombinasi umum dengan memakai Intelephense sebagai LSP utama dan Phpactor sebagai pendamping untuk code actions/refactoring spesifik, pola yang juga dibahas komunitas/editor lain.
+
+### 3.1 Install Phpactor via PHAR (Recommended Install)
 
 ```bash
 # Download latest release
@@ -173,7 +179,7 @@ phpactor --version
 # Output: Phpactor 2025.10.17.0
 ```
 
-### 3.2 Install via Composer (Alternative)
+### 3.2 Install via Composer (Alternative Install)
 
 ```bash
 # Jika ingin menggunakan composer
@@ -184,53 +190,11 @@ echo 'export PATH="$HOME/.composer/vendor/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### 3.3 Setup Project untuk Phpactor
+### 3.3 Setup Project untuk Phpactor (Bagi yang menginstall ini)
 
-Di setiap project PHP Anda:
-
-```bash
-cd /home/user_name/Desktop/CobaPHP
-
-# 1. Init Git repository
-git init
-git config user.name "user_name"
-git config user.email "user_name@example.com"
-
-# 2. Init Composer
-composer init
-# Atau langsung dengan config:
-cat > composer.json << 'EOF'
-{
-    "name": "user_name/coba-php",
-    "description": "Test project",
-    "require": {},
-    "require-dev": {},
-    "minimum-stability": "dev"
-}
-EOF
-
-composer install
-
-# 3. Buat file konfigurasi Phpactor
-cat > .phpactor.yml << 'EOF'
-# Phpactor configuration untuk project ini
-language_server_phpstan.enabled: false
-language_server_psalm.enabled: false
-EOF
-
-# 4. Init Git dengan .gitignore
-echo "vendor/" > .gitignore
-git add .
-git commit -m "Initial commit"
-
-# 5. Index project
-phpactor index:build
-```
-
-### 3.4 Check Status Phpactor
+Masuk ke dalam folder project anda. Kemudian, anda bisa check status `Phpactor` dengan mengetik perintah di bawah.
 
 ```bash
-cd /home/user_name/Desktop/CobaPHP
 phpactor status
 
 # Output yang diharapkan:
@@ -240,6 +204,10 @@ phpactor status
 # ✔ Git detected
 # ✔ Path is trusted
 ```
+
+> [!note|label:Catatan]
+>
+> **Jika kalian hanya mencoba project secara cepat tidak perlu dibuat checklist semua**. Dengan kata lain tidak perlu inisiasi git, composer dan lain-lain di awal.
 
 ---
 
@@ -290,7 +258,7 @@ Untuk menghindari konflik:
 ### 5.1 Struktur Project Lengkap
 
 ```
-/home/user_name/Desktop/CobaPHP/
+CobaPHP/
 ├── .git/                          # Git repository
 ├── .gitignore                     # Git ignore file
 ├── .phpactor.yml                  # Phpactor config
@@ -315,16 +283,76 @@ Untuk menghindari konflik:
     └── index.php                  # Entry point
 ```
 
-### 5.2 Setup Prettier untuk PHP
+> [!note|label: Catatan]
+>
+> **Struktur Project di atas, boleh diikuti boleh tidak**. Itu hanya semacam rekomendasi jika ingin membuat project php murni dengan pattern MVC.
+
+### 5.2 Setup Project Sederhana
+
+Buatlah Folder untuk memulai misalnya `CobaPHP`. Kemudian, buka code editor yang anda pakai misal vscode. selanjutnya, Buka project `CobaPHP`. Arahkan ke terminal (bash), ketik :
 
 ```bash
-cd /home/user_name/Desktop/CobaPHP
+composer init
+```
 
-# Install Prettier dan plugin PHP
+Nanti kalian akan di arahkan pada mode interaktif dimana anda harus mengisi sesuatu disana.
+Bisanya secara berurutan menampilkan :
+
+- name (vendor/package),
+- description,
+- author,
+- type (library/project),
+- license,
+- minimum‑stability,
+- require dan
+- require‑dev,
+- serta autoload jika diinginkan.
+
+Atau paling mudah
+
+```bash
+composer init -n --name=app/app --type=project
+```
+
+Perintah di atas adalah setup minimal untuk memulai cepat. Tidak disarankan untuk project serius atau membuat aplikasi.
+
+Selanjutnya menginstall prettier plugin untuk php. Untuk selengkapnya silahkan pergi ke https://github.com/prettier/plugin-php
+
+**Abaikan langkah selanjutnya, jika kalian sepenuhnya menggunakan formatter menggunakan Intelephense, bukan prettier.**
+
+Pertama, ketik perintah terminal(bash) di bawah ini pada root project :
+
+```bash
+npm init --y
+```
+
+Setelah, `package.json` dibuat, edit file tersebut. Sehingga hasilnya seperti di bawah ini.
+
+```json
+{
+  "name": "cobaphp",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "commonjs"
+}
+```
+
+Setelah itu save dan close file `package.json`.
+
+Lanjut pergi ke terminal root project anda, lalu ketik :
+
+```bash
 npm install --save-dev prettier @prettier/plugin-php
+```
 
-# Buat file .prettierrc
-cat > .prettierrc << 'EOF'
+Itu akan menginstall dev dependencies prettier untuk formater pada PHP. Alasan menggunakan prettier plugin php, daripada menggunakan formater dari Intelephense, karena saat ada tag HTML di dalam PHP (View layout) hasil formaternya kadang tidak bagus.
+
+Namun, jika itu ribet dan sepenuhnya menggunakan formater Intelephense sekali lagi skip langkah ini dan langkah selanjutnya.
+
+Selanjutnya buat file `.prettierrc`, isi file itu seperti di bawah ini:
+
+```bash
 {
   "plugins": ["@prettier/plugin-php"],
   "phpVersion": "8.4",
@@ -335,125 +363,15 @@ cat > .prettierrc << 'EOF'
   "trailingCommaPHP": true,
   "braceStyle": "per-cs"
 }
-EOF
+```
 
-# Buat file .prettierignore
-cat > .prettierignore << 'EOF'
+Lanjut lagi, buat file `.prettierignore`, isi file itu seperti di bawah ini :
+
+```bash
 vendor/
 node_modules/
 *.min.js
 *.min.css
-EOF
-```
-
-### 5.3 Initialize Project dari Awal (Optional)
-
-Script lengkap untuk setup project baru:
-
-```bash
-#!/bin/bash
-# setup-project.sh
-
-PROJECT_NAME="coba-php"
-PROJECT_PATH="/home/user_name/Desktop/$PROJECT_NAME"
-
-# Buat folder
-mkdir -p "$PROJECT_PATH"
-cd "$PROJECT_PATH"
-
-# Git setup
-git init
-git config user.name "user_name"
-git config user.email "user_name@example.com"
-
-# Composer setup
-cat > composer.json << 'EOF'
-{
-    "name": "user_name/coba-php",
-    "description": "PHP Project",
-    "require": {
-        "php": "^8.4"
-    },
-    "require-dev": {},
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/"
-        }
-    },
-    "minimum-stability": "dev"
-}
-EOF
-
-# PHP stubs untuk Intelephense
-composer require --dev jetbrains/phpstorm-stubs
-
-# Phpactor config
-cat > .phpactor.yml << 'EOF'
-language_server_worse_reflection.stub_dir: "%project_root%/vendor/jetbrains/phpstorm-stubs"
-language_server_phpstan.enabled: false
-language_server_psalm.enabled: false
-EOF
-
-# NPM/Prettier setup
-cat > package.json << 'EOF'
-{
-  "name": "coba-php",
-  "version": "1.0.0",
-  "devDependencies": {
-    "@prettier/plugin-php": "^0.22.0",
-    "prettier": "^3.0.0"
-  }
-}
-EOF
-
-npm install
-
-# Prettier config
-cat > .prettierrc << 'EOF'
-{
-  "plugins": ["@prettier/plugin-php"],
-  "phpVersion": "8.4",
-  "printWidth": 100,
-  "tabWidth": 4,
-  "useTabs": false,
-  "singleQuote": true,
-  "trailingCommaPHP": true,
-  "braceStyle": "per-cs"
-}
-EOF
-
-# Git ignore
-cat > .gitignore << 'EOF'
-vendor/
-node_modules/
-composer.lock
-.DS_Store
-.vscode/workspace
-*.swp
-*.swo
-*~
-EOF
-
-# Create directories
-mkdir -p src public
-
-# Initial commit
-git add .
-git commit -m "Initial commit: PHP dev environment setup"
-
-# Build Phpactor index
-phpactor index:build
-
-echo "✅ Project setup complete!"
-echo "📁 Location: $PROJECT_PATH"
-echo "🚀 Ready to code!"
-```
-
-Jalankan script:
-
-```bash
-chmod +x setup-project.sh
-./setup-project.sh
 ```
 
 ---
@@ -462,7 +380,7 @@ chmod +x setup-project.sh
 
 ### 6.1 Complete settings.json
 
-Buka `Ctrl+Shift+P` → "Preferences: Open User Settings (JSON)", kemudian copy-paste:
+Buka `Ctrl+Shift+P` → "Preferences: Open User Settings (JSON)", kemudian copy-paste kode di bawah. **Sekali lagi, ini berdasarkan ekstensi yang diinstall pada panduan instal ekstensi di atas**. Jadi, kalian boleh mengikuti, boleh tidak jika itu _terlalu ribet_ atau sulit.
 
 ```json
 {
@@ -643,7 +561,20 @@ Buka `Ctrl+Shift+P` → "Preferences: Open User Settings (JSON)", kemudian copy-
 
 ### 6.2 Workspace Settings (Per-Project) (Optional)
 
-Buat file `.vscode/settings.json` di folder project:
+Buat`.vscode/settings.json` di root folder project, kemudian isi `setting.json` :
+
+```bash
+{
+  "[php]": {
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "phpactor-action.phpactorBinPath": "/usr/local/bin/phpactor"
+}
+```
+
+Atau paling mudah pergi ke terminal(bash), copy-paste kode di bawah ini :
 
 ```bash
 mkdir -p .vscode
