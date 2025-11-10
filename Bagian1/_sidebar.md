@@ -9,3 +9,4 @@
 - [Instalasi dan Setup PHP](/Bagian1/005-SetupPHP.md)
 - [Setup XDebug](/Bagian1/006-SetupXDebugPHP.md)
 - [Install MariaDB](/Bagian1/007-InstallMariaDB.md)
+- [Apa itu Yopmail](/Bagian1/008-Yopmail.md)
