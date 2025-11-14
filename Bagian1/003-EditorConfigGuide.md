@@ -113,7 +113,7 @@ insert_final_newline = true
 indent_style = space
 # Anda bisa mengatur panjang baris maksimum, meskipun tidak semua editor mendukungnya.
 # 120 adalah pilihan modern, namun bisa disesuaikan (misalnya 80 atau 100).
-max_line_length = 120
+# max_line_length = 120
 
 # Aturan untuk file web dan konfigurasi umum (indentasi 2 spasi)
 # Mengelompokkan ekstensi file dengan aturan yang sama membuatnya lebih ringkas.
